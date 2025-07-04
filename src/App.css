@@ -514,3 +514,109 @@
   color: #fff;
   border-radius: 10px;
 }
+
+/* Profile btn  */
+.profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background-color: #f0f4f8;
+  color: #333;
+  border: 1px solid #d0d7de;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.profile-btn i {
+  font-size: 14px;
+  color: #4a90e2;
+}
+
+.profile-btn:hover {
+  background-color: #e6effa;
+  border-color: #b3cce6;
+  color: #1a3f66;
+}
+
+/* Profile Css  */
+.profile-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 30px;
+  background: #f9f9fb;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  font-family: 'Inter', sans-serif;
+  color: #333;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-bottom: 30px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.profile-image img {
+  width: 140px;
+  height: 140px;
+  border-radius: 16px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.profile-info h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.profile-info .role {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 4px;
+}
+
+.profile-info .email,
+.profile-info .location {
+  font-size: 14px;
+  color: #555;
+}
+
+.product-summary {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.product-summary h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.product-count {
+  font-size: 16px;
+  margin-bottom: 15px;
+  color: #444;
+}
+
+.view-products {
+  padding: 10px 20px;
+  background: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.view-products:hover {
+  background: #357ab8;
+}

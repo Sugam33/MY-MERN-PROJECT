@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import ProductContext from '../context/ProductContext';
 
 
-const Navbar = ({ title, mode, modeName, changeNavColor, notify }) => {
+const Navbar = ({ title, mode, modeName, changeNavColor, notify, loginMode }) => {
    const context = useContext(ProductContext);
    const navigate = useNavigate();
 
@@ -92,6 +92,7 @@ const Navbar = ({ title, mode, modeName, changeNavColor, notify }) => {
         <button className="btn btn-primary me-2" onClick={notify}>Show Toast from Navbar</button>
         <button className="btn btn-primary me-2" onClick={changeNavColor}>{modeName}</button>
         <Link to="/signup"><button className="btn btn-warning me-2">Signup</button></Link>
+        <Link className={`profile-btn`} to="/profile">Profile<i className="fa-solid fa-user"></i></Link>
         <Link to="/login"><button className="btn btn-success me-2">Login</button></Link>
       </div>
   </div>

@@ -22,6 +22,7 @@ import CartItems from './components/CartItems';
 import AddProduct from './components/AddProduct';
 import FormDetails from './components/FormDetails';
 import SearchResult from './components/SearchResult';
+import Profile from './components/Dashboard/Profile.jsx';
 
 
 
@@ -68,6 +69,8 @@ function App() {
           }, 2000)
         }
     }
+
+
   
     // Alert function
   const showAlert = (message, type) => {
@@ -127,6 +130,7 @@ theme: "dark",
           <Route path='/addproduct' element={<AddProduct />}/>
           <Route path='/formdetails' element={<FormDetails />} />
           <Route path="/search/:searchQuery" element={<SearchResult />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </div>
       <Footer mode={mode}/>
