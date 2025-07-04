@@ -15,8 +15,13 @@ router.get("/allproduct", fetchUser, async (req, res) => {
 });
 
 router.get("/allhomeproduct", fetchUser, async (req, res) => {
-  try {
-    const products = await Product.find({});
+ try {
+    const searchQuery = req.query.searchQuery
+      ? {
+          title: { $regex: req.query.searchQuery, $options: "i" },
+        }
+      : "";
+    const products = await Product.find({ ...searchQuery });
     res.json(products);
   } catch (error) {
     res.status(500).json({ error: "internal server error" });

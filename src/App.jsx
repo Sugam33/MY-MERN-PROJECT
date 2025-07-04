@@ -21,6 +21,7 @@ import ProductState from './context/ProductState';
 import CartItems from './components/CartItems';
 import AddProduct from './components/AddProduct';
 import FormDetails from './components/FormDetails';
+import SearchResult from './components/SearchResult';
 
 
 
@@ -125,6 +126,7 @@ theme: "dark",
           <Route path='/cart' element={<CartItems />}/>
           <Route path='/addproduct' element={<AddProduct />}/>
           <Route path='/formdetails' element={<FormDetails />} />
+          <Route path="/search/:searchQuery" element={<SearchResult />} />
         </Routes>
       </div>
       <Footer mode={mode}/>

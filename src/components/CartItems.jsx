@@ -30,18 +30,33 @@ const CartItems = () => {
             {cart?.map((item) => (
               <tr key={item._id}>
                 <td>
-  <img
-    src={item.image}
-    alt="Product"
-    style={{
-      height: "100px",
-      width: "200px",
-      objectFit: "cover",
-      borderRadius: "8px",
-    }}
-    className="img-fluid"
-  />
-</td>
+                  {/* <img
+                    src={item.image}
+                    alt="Product"
+                    style={{
+                      height: "100px",
+                      width: "200px",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                    }}
+                    className="img-fluid"
+                  /> */}
+                  <img
+                    src={
+                      item.image?.[0]
+                        ? `http://localhost:5000/uploads/${item.image[0]}`
+                        : "/oranges.jpg"
+                    }
+                     style={{
+                      height: "100px",
+                      width: "200px",
+                      objectFit: "cover",
+                      borderRadius: "8px",
+                    }}
+                    className="img-fluid"
+                    alt="orange image"
+                  />
+                </td>
                 <td>{item.name}</td>
                 <td>Rs. {item.price}</td>
                 <td>
@@ -83,7 +98,9 @@ const CartItems = () => {
       <div className="summary mt-3 text-center">
         <h5>Total items: {cart.length}</h5>
         <h4>Sub-total: Rs. {total}</h4>
-        <button className="btn btn-success btn-lg mt-2">Proceed to checkout</button>
+        <button className="btn btn-success btn-lg mt-2">
+          Proceed to checkout
+        </button>
       </div>
     </div>
   );

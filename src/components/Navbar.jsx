@@ -1,15 +1,34 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaShoppingCart } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProductContext from '../context/ProductContext';
 
 
 const Navbar = ({ title, mode, modeName, changeNavColor, notify }) => {
    const context = useContext(ProductContext);
+   const navigate = useNavigate();
+
+    const [searchQuery, setSearchQuery] = useState("");
+
   const {
     state: { cart },
   } = context;
   console.log("nav cart", cart);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search/${searchQuery}`);
+    } else {
+      alert("product not found");
+      navigate("/");
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
   return ( 
     <div>
       <nav className={`navbar navbar-expand-lg navbar-${mode} bg-${mode}`}>
@@ -44,6 +63,20 @@ const Navbar = ({ title, mode, modeName, changeNavColor, notify }) => {
           </ul>
         </li> */}
       </ul>
+      <form onSubmit={handleSearchSubmit} className="d-flex">
+              <input
+                className="form-control me-2"
+                type="search"
+                name="searchQuery"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <button className="btn btn-outline-success" type="submit">
+                Search
+              </button>
+            </form>
       <Link to="/cart">
               <button
                 type="button"
