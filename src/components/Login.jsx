@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ProductContext from '../context/ProductContext'; 
 
 const Login = () => {
   const navigate = useNavigate();
+  const { fetchCart } = useContext(ProductContext); 
+
   const [showPassword, setShowPassword] = useState(false);
   const [credential, setCredential] = useState({
     email: "",
@@ -30,6 +33,7 @@ const Login = () => {
 
       if (response.ok) {
         localStorage.setItem("Token", data.authToken);
+        fetchCart() //  Fetch cart from DB after login
         toast.success("Login successful!");
         navigate("/");
       } else {

@@ -47,12 +47,18 @@ const ProductState = (props) => {
   };
 
   const addToCart = async (item) => {
+    const token = localStorage.getItem("Token");
+    if (!token) {
+      console.warn("User not logged in");
+      return;
+    }
+
     try {
       const res = await fetch(`http://localhost:5000/api/cart/addtocart`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("Token"),
+          "auth-token": token,
         },
         body: JSON.stringify({
           product: item._id,
@@ -68,11 +74,17 @@ const ProductState = (props) => {
   };
 
   const removeFromCart = async (productId) => {
+    const token = localStorage.getItem("Token");
+    if (!token) {
+      console.warn("User not logged in");
+      return;
+    }
+
     try {
       const res = await fetch(`http://localhost:5000/api/cart/removefromcart/${productId}`, {
         method: "DELETE",
         headers: {
-          "auth-token": localStorage.getItem("Token"),
+          "auth-token": token,
         },
       });
       const data = await res.json();
@@ -83,11 +95,17 @@ const ProductState = (props) => {
   };
 
   const clearCart = async () => {
+    const token = localStorage.getItem("Token");
+    if (!token) {
+      console.warn("User not logged in");
+      return;
+    }
+
     try {
       const res = await fetch(`http://localhost:5000/api/cart/clearcart`, {
         method: "DELETE",
         headers: {
-          "auth-token": localStorage.getItem("Token"),
+          "auth-token": token,
         },
       });
       const data = await res.json();
@@ -98,12 +116,18 @@ const ProductState = (props) => {
   };
 
   const updateCartItem = async (productId, quantity) => {
+    const token = localStorage.getItem("Token");
+    if (!token) {
+      console.warn("User not logged in");
+      return;
+    }
+
     try {
       const res = await fetch(`http://localhost:5000/api/cart/updatecart/${productId}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          "auth-token": localStorage.getItem("Token"),
+          "auth-token": token,
         },
         body: JSON.stringify({ quantity }),
       });
@@ -112,6 +136,10 @@ const ProductState = (props) => {
     } catch (err) {
       console.error("Update cart item failed:", err);
     }
+  };
+
+  const clearCartState = () => {
+    dispatch({ type: "CLEAR_CART" }); //  Clears cart from context
   };
 
   const editProduct = async (id, updatedData) => {
@@ -163,8 +191,10 @@ const ProductState = (props) => {
         removeFromCart,
         updateCartItem,
         clearCart,
+        clearCartState, 
         editProduct,
         deleteProduct,
+        fetchCart,
       }}
     >
       {props.children}

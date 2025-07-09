@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Profilepic from '../../assets/profilepic.jpg';
 import AddProduct from '../AddProduct';
-
+import ProductContext from '../../context/ProductContext'; 
 
 const Profile = () => {
   const [products, setProducts] = useState([]);
@@ -17,8 +17,16 @@ const Profile = () => {
 
   const navigate = useNavigate();
 
+  const {
+    state: { cart },
+    addToCart,
+    removeFromCart,
+    clearCartState, // ✅ Import clearCartState
+  } = useContext(ProductContext); 
+
   const handleLogout = () => {
     localStorage.removeItem('Token');
+    clearCartState(); // ✅ Clear cart from context
     navigate('/login');
   };
 
@@ -85,6 +93,10 @@ const Profile = () => {
     }
   };
 
+  const isInCart = (productId) => {
+    return cart?.some((item) => item.product?._id === productId);
+  };
+
   return (
     <section className="profile-container">
       <ToastContainer position="top-center" autoClose={3000} />
@@ -129,7 +141,6 @@ const Profile = () => {
       )}
 
       <div className="product-summary">
-        <h3>{viewing === 'mine' ? 'My Products' : 'All Products'}</h3>
         <div className="button-group">
           <button className="view-products" onClick={fetchAllProducts}>View All Products</button>
           <button className="view-products" onClick={fetchMyProducts}>View My Products</button>
@@ -145,7 +156,7 @@ const Profile = () => {
         )}
 
         <p className="product-count">Total: {products.length}</p>
-
+        <h3>{viewing === 'mine' ? 'My Products' : 'All Products'}</h3>
         <div className="product-flex">
           {Array.isArray(products) && products.length > 0 ? (
             products.map((product) => (
@@ -161,6 +172,29 @@ const Profile = () => {
                 <p>{product.description}</p>
                 <p><strong>Price:</strong> Rs. {product.price}</p>
                 <p><strong>In Stock:</strong> {product.instock}</p>
+
+                {isInCart(product._id) ? (
+                  <button
+                    className="btn btn-danger w-100 mt-2"
+                    onClick={() => removeFromCart(product._id)}
+                  >
+                    Remove from cart
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-primary w-100 mt-2"
+                    onClick={() => {
+                      const token = localStorage.getItem("Token");
+                      if (!token) {
+                        toast.warn("Please login to add items to your cart");
+                        return;
+                      }
+                      addToCart(product);
+                    }}
+                  >
+                    Add to cart
+                  </button>
+                )}
               </div>
             ))
           ) : (
@@ -171,7 +205,7 @@ const Profile = () => {
 
       <div className="logout-section">
         <button className="logout-button" onClick={handleLogout}>
-          🔓 Logout
+          Logout
         </button>
       </div>
     </section>

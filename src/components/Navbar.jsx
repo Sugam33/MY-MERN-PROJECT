@@ -10,6 +10,7 @@ const Navbar = ({ title, mode, modeName, changeNavColor, notify, loginMode }) =>
 
   const {
     state: { cart },
+    clearCartState, // ✅ Import clearCartState from context
   } = context;
 
   const handleSearchSubmit = (e) => {
@@ -28,6 +29,7 @@ const Navbar = ({ title, mode, modeName, changeNavColor, notify, loginMode }) =>
 
   const handleLogout = () => {
     localStorage.removeItem("Token");
+    clearCartState(); // ✅ Clear cart from context
     navigate("/login");
   };
 
@@ -73,7 +75,6 @@ const Navbar = ({ title, mode, modeName, changeNavColor, notify, loginMode }) =>
               </button>
             </form>
 
-            {/* ✅ Show cart icon only if logged in */}
             {isLoggedIn && (
               <Link to="/cart">
                 <button type="button" className="btn btn-primary mx-3 position-relative">
