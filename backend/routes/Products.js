@@ -14,16 +14,20 @@ router.get("/allproduct", fetchUser, async (req, res) => {
   }
 });
 
-router.get("/allhomeproduct", fetchUser, async (req, res) => {
- try {
+
+// get all home product
+router.get("/allhomeproduct", async (req, res) => {
+  try {
     const searchQuery = req.query.searchQuery
       ? {
           title: { $regex: req.query.searchQuery, $options: "i" },
         }
-      : "";
-    const products = await Product.find({ ...searchQuery });
-    res.json(products);
+      : {};
+
+    const products = await Product.find(searchQuery);
+    res.json(products); // ✅ Must return an array
   } catch (error) {
+    console.error(error.message);
     res.status(500).json({ error: "internal server error" });
   }
 });
