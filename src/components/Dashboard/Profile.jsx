@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Kratos from '../../assets/kratos.jpg';
+import Profilepic from '../../assets/profilepic.jpg';
 import AddProduct from '../AddProduct';
 
 
@@ -91,7 +91,7 @@ const Profile = () => {
       
       <div className="profile-card">
         <div className="profile-image">
-          <img src={Kratos} alt="kratos profile img" />
+          <img src={Profilepic} alt="profile picture" />
         </div>
         <div className="profile-info">
           <h2>{user.name || 'Loading...'}</h2>

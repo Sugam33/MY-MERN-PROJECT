@@ -31,8 +31,10 @@ const Signup = () => {
       const data = await response.json();
 
       if (response.status === 201) {
-        localStorage.setItem("Token", data.authToken);
-        toast.success("Signup successful!");
+        toast.success("Signup successful!! Please log in to continue.", {
+          position: "top-center",
+          autoClose: 3000,
+        });
         navigate("/login");
       } else {
         toast.error(data.message || "Signup failed");
