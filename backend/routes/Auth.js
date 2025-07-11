@@ -7,8 +7,8 @@ const multer = require("multer");
 const path = require("path");
 const { body, validationResult } = require('express-validator');
 const fetchUser = require('../middleware/FetchUser');
-const OtpToken = require('../model/OtpToken'); // 🆕 OTP model
-const sendEmail = require('../utils/sendEmail'); // 🆕 Email sender
+const OtpToken = require('../model/OtpToken'); //  OTP model
+const sendEmail = require('../utils/sendEmail'); //  Email sender
 
 dotenv.config();
 const router = express.Router();
