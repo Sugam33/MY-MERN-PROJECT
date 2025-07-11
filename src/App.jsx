@@ -23,6 +23,9 @@ import AddProduct from './components/AddProduct';
 import FormDetails from './components/FormDetails';
 import SearchResult from './components/SearchResult';
 import Profile from './components/Dashboard/Profile.jsx';
+import ResetRequest from './components/AuthReset/ResetRequest.jsx';
+import VerifyOtp from './components/AuthReset/VerifyOtp.jsx';
+import ResetPassword from './components/AuthReset/ResetPassword.jsx';
 
 
 
@@ -96,12 +99,21 @@ theme: "dark",
   let title = "Sekuwaghar";
 
   return (
-    
     <>
     <ProductState>
     <Router>
     <Navbar title={title} mode={mode} changeNavColor={changeNavColor} modeName = {modeName}  notify = {notify} />
-    <ToastContainer/>
+    <ToastContainer 
+    position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  theme="colored"/>
     <Alert alert = {alert}/>
 
     {/* <Banner />
@@ -131,6 +143,11 @@ theme: "dark",
           <Route path='/formdetails' element={<FormDetails />} />
           <Route path="/search/:searchQuery" element={<SearchResult />} />
           <Route path="/profile" element={<Profile />} />
+
+          {/* Reset password Route */}
+         <Route path="/request-reset" element={<ResetRequest />} />
+         <Route path="/verify-otp" element={<VerifyOtp />} />
+         <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </div>
       <Footer mode={mode}/>

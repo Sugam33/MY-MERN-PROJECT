@@ -50,7 +50,7 @@ const Navbar = ({ title, mode, modeName, changeNavColor, notify, loginMode }) =>
                 <Link className="nav-link active" to="/">Home</Link>
               </li>
               <li className="nav-item">
-                <Link className="nav-link active" to="/about">About</Link>
+                <Link className="nav-link active" to="/about">Our Products</Link>
               </li>
               <li className="nav-item">
                 <Link className="nav-link active" to="/blogs">Blogs</Link>

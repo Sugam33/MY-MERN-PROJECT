@@ -109,7 +109,7 @@ router.put('/updateuser', fetchUser, async (req, res) => {
   }
 });
 
-// 🆕 Request OTP
+// Request OTP
 router.post('/request-reset', async (req, res) => {
   const { email } = req.body;
   try {
@@ -127,7 +127,7 @@ router.post('/request-reset', async (req, res) => {
   }
 });
 
-// 🆕 Verify OTP
+// Verify OTP
 router.post('/verify-otp', async (req, res) => {
   const { email, otp } = req.body;
   try {
@@ -141,7 +141,7 @@ router.post('/verify-otp', async (req, res) => {
   }
 });
 
-// 🆕 Reset Password
+// Reset Password
 router.put('/reset-password', async (req, res) => {
   const { email, otp, newPassword } = req.body;
   try {

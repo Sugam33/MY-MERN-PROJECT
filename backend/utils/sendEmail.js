@@ -11,7 +11,7 @@ const sendEmail = async (to, subject, text) => {
   });
 
   const mailOptions = {
-    from: `"YourApp Support" <${process.env.EMAIL_USER}>`,
+    from: `"Sekuwaghar Password Reset Request" <${process.env.EMAIL_USER}>`,
     to,
     subject,
     text

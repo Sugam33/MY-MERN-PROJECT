@@ -15,7 +15,7 @@ const Footer = ({mode}) => {
             <div className="col-md-4">
                 <h5 className="fw-bold">Quick Links</h5>
                 <ul className="list-unstyled">
-                    <li><Link to="/about">About Us</Link></li>
+                    <li><Link to="/about">Our Products</Link></li>
                     <li><Link to="/services">Services</Link></li>
                     <li><Link to="/gallery">Gallery</Link></li>
                     <li><Link to="/contacts">Contact</Link></li>
