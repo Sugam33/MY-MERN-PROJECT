@@ -21,7 +21,11 @@ const userSchema = new Schema({
     date: {
         type: Date,
         default: Date.now
-    }
+    },
+    profileImage: {
+        type: String,
+        default: "",
+    },
 });
 
 const User = mongoose.model('User', userSchema);

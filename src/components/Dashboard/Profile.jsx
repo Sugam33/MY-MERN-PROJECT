@@ -3,39 +3,39 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Profilepic from '../../assets/profilepic.jpg';
+import defaultProfile from '../../assets/profilepic.jpg';
 import AddProduct from '../AddProduct';
-import ProductContext from '../../context/ProductContext'; 
+import ProductContext from '../../context/ProductContext';
 
 const Profile = () => {
   const [products, setProducts] = useState([]);
   const [viewing, setViewing] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [user, setUser] = useState({ name: '', email: '', mobile: '' });
+  const [user, setUser] = useState({ name: '', email: '', mobile: '', profileImage: '' });
   const [updatedUser, setUpdatedUser] = useState({ name: '', email: '', mobile: '', password: '' });
 
-  const navigate = useNavigate();
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [editedProduct, setEditedProduct] = useState({ title: "", description: "", price: "", instock: "" });
 
+  const navigate = useNavigate();
   const {
     state: { cart },
     addToCart,
     removeFromCart,
-    clearCartState, // ✅ Import clearCartState
-  } = useContext(ProductContext); 
+    clearCartState,
+  } = useContext(ProductContext);
 
   const handleLogout = () => {
     localStorage.removeItem('Token');
-    clearCartState(); // ✅ Clear cart from context
+    clearCartState();
     navigate('/login');
   };
 
   const fetchUserDetails = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/auth/getuser', {
-        headers: {
-          'auth-token': localStorage.getItem('Token')
-        }
+        headers: { 'auth-token': localStorage.getItem('Token') }
       });
       setUser(res.data);
       setUpdatedUser({ ...res.data, password: '' });
@@ -61,9 +61,7 @@ const Profile = () => {
   const fetchMyProducts = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/product/allproduct', {
-        headers: {
-          'auth-token': localStorage.getItem('Token')
-        }
+        headers: { 'auth-token': localStorage.getItem('Token') }
       });
       setProducts(res.data);
       setViewing('mine');
@@ -80,9 +78,7 @@ const Profile = () => {
     e.preventDefault();
     try {
       const res = await axios.put('http://localhost:5000/api/auth/updateuser', updatedUser, {
-        headers: {
-          'auth-token': localStorage.getItem('Token')
-        }
+        headers: { 'auth-token': localStorage.getItem('Token') }
       });
       setUser(res.data);
       setEditMode(false);
@@ -93,17 +89,67 @@ const Profile = () => {
     }
   };
 
+  const handleEditProduct = (product) => {
+    setEditingProduct(product);
+    setEditedProduct({
+      title: product.title,
+      description: product.description,
+      price: product.price,
+      instock: product.instock,
+    });
+  };
+
+  const handleChangeEdit = (e) => {
+    setEditedProduct({ ...editedProduct, [e.target.name]: e.target.value });
+  };
+
+  const handleEditSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.put(`http://localhost:5000/api/product/updateproduct/${editingProduct._id}`, editedProduct, {
+        headers: { "auth-token": localStorage.getItem("Token") }
+      });
+      toast.success("Product updated successfully!");
+      setEditingProduct(null);
+      fetchMyProducts();
+    } catch (error) {
+      toast.error("Failed to update product");
+    }
+  };
+
+  const handleDeleteProduct = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/product/deleteproduct/${id}`, {
+        headers: { "auth-token": localStorage.getItem("Token") }
+      });
+      toast.success("Product deleted!");
+      fetchMyProducts();
+    } catch (error) {
+      toast.error("Failed to delete product");
+    }
+  };
+
   const isInCart = (productId) => {
     return cart?.some((item) => item.product?._id === productId);
   };
 
-  return (
+    return (
     <section className="profile-container">
       <ToastContainer position="top-center" autoClose={3000} />
-      
+
       <div className="profile-card">
         <div className="profile-image">
-          <img src={Profilepic} alt="profile picture" />
+          <img
+            src={user.profileImage ? `http://localhost:5000${user.profileImage}` : defaultProfile}
+            alt="profile"
+            className="rounded-circle"
+            style={{
+              width: "100px",
+              height: "100px",
+              objectFit: "cover",
+              border: "2px solid #007bff"
+            }}
+          />
         </div>
         <div className="profile-info">
           <h2>{user.name || 'Loading...'}</h2>
@@ -172,6 +218,46 @@ const Profile = () => {
                 <p>{product.description}</p>
                 <p><strong>Price:</strong> Rs. {product.price}</p>
                 <p><strong>In Stock:</strong> {product.instock}</p>
+
+                {viewing === 'mine' && (
+                  <div className="mt-3">
+                    <button
+                      className="btn btn-outline-primary me-2"
+                      onClick={() => handleEditProduct(product)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn btn-outline-danger"
+                      onClick={() => handleDeleteProduct(product._id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                )}
+
+                {editingProduct?._id === product._id && (
+                  <form onSubmit={handleEditSubmit} className="mt-3 p-3 border rounded bg-light">
+                    <h5 className="mb-3">Update Product</h5>
+
+                    <label className="form-label fw-bold">Title</label>
+                    <input type="text" name="title" value={editedProduct.title} onChange={handleChangeEdit} className="form-control mb-3" required />
+
+                    <label className="form-label fw-bold">Description</label>
+                    <textarea name="description" value={editedProduct.description} onChange={handleChangeEdit} className="form-control mb-3" required />
+
+                    <label className="form-label fw-bold">Price</label>
+                    <input type="number" name="price" value={editedProduct.price} onChange={handleChangeEdit} className="form-control mb-3" required />
+
+                    <label className="form-label fw-bold">In Stock</label>
+                    <input type="number" name="instock" value={editedProduct.instock} onChange={handleChangeEdit} className="form-control mb-3" required />
+
+                    <div className="d-flex justify-content-end">
+                      <button type="submit" className="btn btn-success me-2">Save</button>
+                      <button type="button" className="btn btn-secondary" onClick={() => setEditingProduct(null)}>Cancel</button>
+                    </div>
+                  </form>
+                )}
 
                 {isInCart(product._id) ? (
                   <button

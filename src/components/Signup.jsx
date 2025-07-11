@@ -10,11 +10,16 @@ const Signup = () => {
     name: "",
     email: "",
     password: "",
-    mobile: ""
+    mobile: "",
   });
+  const [profileImage, setProfileImage] = useState(null); 
 
   const handleChange = (event) => {
     setCredential({ ...credential, [event.target.name]: event.target.value });
+  };
+
+  const handleImageChange = (event) => {
+    setProfileImage(event.target.files[0]); 
   };
 
   const handleSubmit = async (event) => {
@@ -22,10 +27,18 @@ const Signup = () => {
     const { name, email, password, mobile } = credential;
 
     try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+      formData.append("password", password);
+      formData.append("mobile", mobile);
+      if (profileImage) {
+        formData.append("profileImage", profileImage); 
+      }
+
       const response = await fetch('http://localhost:5000/api/auth/createuser', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, mobile })
+        body: formData, 
       });
 
       const data = await response.json();
@@ -51,7 +64,7 @@ const Signup = () => {
       <div className="auth-container">
         <div className="auth-card">
           <h2>Sign Up</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
             <div className="mb-4">
               <label className="form-label">Username</label>
               <input type="text" className="form-control" name="name" value={credential.name} placeholder="Enter username" onChange={handleChange} required />
@@ -72,6 +85,10 @@ const Signup = () => {
                   {showPassword ? "🙈" : "👁️"}
                 </span>
               </div>
+            </div>
+            <div className="mb-4">
+              <label className="form-label">Profile Picture</label>
+              <input type="file" accept="image/*" className="form-control" onChange={handleImageChange} />
             </div>
             <button type="submit" className="btn btn-primary w-100">Sign Up</button>
           </form>
